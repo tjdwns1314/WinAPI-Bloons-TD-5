@@ -39,6 +39,12 @@
     <ClInclude Include="Graphic.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Image.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteAtals.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TowerDefense.cpp">
@@ -51,6 +57,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Graphic.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteAtals.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
