@@ -128,6 +128,7 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameScene.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="pch.h" />
@@ -139,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="pch.cpp">

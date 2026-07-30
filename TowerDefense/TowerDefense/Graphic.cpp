@@ -2,6 +2,19 @@
 #include "Graphic.h"
 void Graphic::Init(HWND hwnd)
 {
+
+	if (hwnd == nullptr)
+	{
+		MessageBox(nullptr, L"hwnd == nullptr", L"Error", MB_OK);
+		return;
+	}
+
+	if (!IsWindow(hwnd))
+	{
+		MessageBox(nullptr, L"hwnd가 유효한 Window가 아닙니다.", L"Error", MB_OK);
+		return;
+	}
+
 	// 1. COM 라이브러리 초기화 (WIC, DIrect2D 기능 사용 준비)
 	HRESULT hr = CoInitialize(nullptr);
 	if (FAILED(hr))
@@ -25,7 +38,8 @@ void Graphic::Init(HWND hwnd)
 	// 4. 창 크기에 맞춰 Direct2D용 그려질 도화지(_renderTarget) 생성
 	RECT rc;
 	GetClientRect(hwnd, &rc); // 창의 내부 크기를 구해옴
-	_factory->CreateHwndRenderTarget(
+
+	hr = _factory->CreateHwndRenderTarget(
 		D2D1::RenderTargetProperties(),
 		D2D1::HwndRenderTargetProperties(hwnd, D2D1::SizeU(rc.right, rc.bottom)),
 		&_renderTarget);
@@ -57,46 +71,39 @@ void Graphic::Cleanup()
 	CoUninitialize();
 }
 
-// PNG 파일을 Direct2D가 그릴 수 있는 픽셀 포맷(ID2D1Bitmap)으로 만드는 과정
 ID2D1Bitmap* Graphic::LoadBitmap(const wchar_t* fileName)
 {
-	// 1. 이미지 파일 디코더 생성 (PNG 파일 파싱)
 	IWICBitmapDecoder* decoder = nullptr;
-	_wicFactory->CreateDecoderFromFilename(
-		fileName,
-		nullptr,
-		GENERIC_READ,
-		WICDecodeMetadataCacheOnLoad,
-		&decoder);
+	HRESULT hr = _wicFactory->CreateDecoderFromFilename(
+		fileName, nullptr, GENERIC_READ, WICDecodeMetadataCacheOnLoad, &decoder);
+	if (FAILED(hr))
+	{
+		OutputDebugString(L"[LoadBitmap] 파일을 찾을 수 없음: ");
+		OutputDebugString(fileName);
+		OutputDebugString(L"\n");
+		return nullptr;
+	}
 
-	// 2. 파일 안의 첫 번째 프레임(이미지 한 장)을 추출
 	IWICBitmapFrameDecode* frame = nullptr;
-	decoder->GetFrame(0, &frame);
+	hr = decoder->GetFrame(0, &frame);
+	if (FAILED(hr)) { decoder->Release(); return nullptr; }
 
-	// 3. 포맷 컨버터 생성 (32비트 PBGRA 투명도 포맷으로 변환)
 	IWICFormatConverter* converter = nullptr;
-	_wicFactory->CreateFormatConverter(&converter);
+	hr = _wicFactory->CreateFormatConverter(&converter);
+	if (FAILED(hr)) { frame->Release(); decoder->Release(); return nullptr; }
 
-	// Direct2D가 가장 좋아하는 32비트 알파 채널(GUID_WICPixelFormat32bppPBGRA) 형태로 변환 초기화
-	converter->Initialize(
-		frame,
-		GUID_WICPixelFormat32bppPBGRA,
-		WICBitmapDitherTypeNone,
-		nullptr,
-		0.f,
-		WICBitmapPaletteTypeMedianCut);
+	hr = converter->Initialize(
+		frame, GUID_WICPixelFormat32bppPBGRA, WICBitmapDitherTypeNone,
+		nullptr, 0.f, WICBitmapPaletteTypeMedianCut);
+	if (FAILED(hr)) { converter->Release(); frame->Release(); decoder->Release(); return nullptr; }
 
-	// 4. WIC 컨버터를 이용해 Direct2D 전용 비트맵 생성
 	ID2D1Bitmap* bitmap = nullptr;
-	_renderTarget->CreateBitmapFromWicBitmap(
-		converter,
-		nullptr,
-		&bitmap);
-	// 사용한 임시 WIC 메모리 해제 (C++ COM 인터페이스는 사용 후 Release 해줘야 함)
+	hr = _renderTarget->CreateBitmapFromWicBitmap(converter, nullptr, &bitmap);
+
 	converter->Release();
 	frame->Release();
 	decoder->Release();
 
-	return bitmap; // 최종 Direct2D 비트맵 반환
-
+	if (FAILED(hr)) return nullptr;
+	return bitmap;
 }

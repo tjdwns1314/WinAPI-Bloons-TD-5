@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Singleton.h"
+#include "Image.h"
+#include "Graphic.h"
+#include "GameScene.h"
 
 
 
@@ -34,6 +37,6 @@ private :
 	HBITMAP _bmpBack;
 
 	Graphic _graphic;
-	//IWICImagingFactory* p_wic_factory = nullptr;
+	GameScene _gameScene;
 };
 

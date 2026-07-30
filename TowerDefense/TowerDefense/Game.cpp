@@ -2,6 +2,10 @@
 #include "Game.h"
 #include "Graphic.h"
 
+#pragma comment(lib, "d2d1.lib")
+#pragma comment(lib, "windowscodecs.lib") // WIC(이미지 로더) 관련 함수도 쓰고 있으므로 같이 필요
+#pragma comment(lib, "ole32.lib")
+
 void Game::Init(HWND hwnd)
 {
 	// 윈도우 창
@@ -26,18 +30,26 @@ void Game::Init(HWND hwnd)
 
 	_graphic.Init(hwnd);
 
+	_gameScene.Init(_graphic);
 
 }
 
 void Game::Cleanup()
 {
+	_gameScene.Release();
 	_graphic.Cleanup();
 }
 
 void Game::Update()
 {
+	//_gameScene.Update();
 }
 
 void Game::Render()
 {
+	_graphic.BeginDraw();
+	_graphic.Clear(D2D1::ColorF(D2D1::ColorF::Black));
+
+	_gameScene.Render(_graphic);
+	_graphic.EndDraw();
 }

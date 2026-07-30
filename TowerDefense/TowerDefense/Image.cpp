@@ -4,6 +4,11 @@ void Image::Load(Graphic& graphic, const wchar_t* fileName)
 {
 	// Graphic의 LoadBitmap을 써서 비트맵 데이터를 가져옴
 	_bitmap = graphic.LoadBitmap(fileName);
+
+	if (_bitmap == nullptr)
+	{
+		MessageBox(nullptr, fileName, L"LoadBitmap 실패", MB_OK);
+	}
 	if (_bitmap) _size = _bitmap->GetSize(); // 이미지의 가로, 세로 크기 기록
 }
 
