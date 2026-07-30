@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Game.h"
 #include "Graphic.h"
+#include "TimeManager.h"
 
 #pragma comment(lib, "d2d1.lib")
 #pragma comment(lib, "windowscodecs.lib") // WIC(이미지 로더) 관련 함수도 쓰고 있으므로 같이 필요
@@ -29,9 +30,9 @@ void Game::Init(HWND hwnd)
 	DeleteObject(prev);
 
 	_graphic.Init(hwnd);
-
 	_gameScene.Init(_graphic);
 
+	TimeManager::GetInstance().Init();
 }
 
 void Game::Cleanup()
@@ -42,7 +43,8 @@ void Game::Cleanup()
 
 void Game::Update()
 {
-	//_gameScene.Update();
+	TimeManager::GetInstance().Update();
+	_gameScene.Update();
 }
 
 void Game::Render()

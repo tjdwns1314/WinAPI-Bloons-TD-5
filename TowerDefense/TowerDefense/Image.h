@@ -1,6 +1,6 @@
 #pragma once
 #include "Graphic.h"
-#include "SpriteAtals.h"
+#include "Sprite.h"
 
 // Graphic이 엔진 전체 판을 관리한다면, 
 // Image는 맵 객체, 캐릭터, 풍선 등 낱개의 PNG 이미지 하나하나를 객체화한 것입니다.

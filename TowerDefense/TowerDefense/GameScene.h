@@ -1,6 +1,6 @@
 #pragma once
 #include "Image.h"
-
+#include "Sprite.h"
 class GameScene
 {
 public :
@@ -10,5 +10,6 @@ public :
 	void Update();
 private :
 	Image _inGameBg;
+	Sprite _sprite;
 };
 

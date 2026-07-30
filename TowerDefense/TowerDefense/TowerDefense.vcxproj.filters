@@ -42,7 +42,7 @@
     <ClInclude Include="Image.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteAtals.h">
+    <ClInclude Include="Sprite.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
     <ClInclude Include="GameScene.h">
@@ -65,7 +65,7 @@
     <ClCompile Include="Image.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="SpriteAtals.cpp">
+    <ClCompile Include="Sprite.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="GameScene.cpp">
