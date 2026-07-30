@@ -8,6 +8,8 @@
 #include <unordered_map>
 #include <set>
 #include <functional>
+
+#include "Util.h"
 using namespace std;
 
 using int8 = char;		// 1byte Á¤¼öÇü
